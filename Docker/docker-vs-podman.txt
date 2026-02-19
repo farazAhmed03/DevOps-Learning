@@ -1,0 +1,18 @@
+
+# Docker vs Podman Differences
+
+# Docker
+  => daemon base  => rely on service like, running, stop, etc
+  => container support
+  => limited rootless containers  => mostly need root priviledges mostly to run. Normal user does not use docker containers  ==> sudo su  ==> switch to root ==> then we should make or run a container of docker
+  => limited security or less security  ==> e.g => nginx, http, db  ==> Hacker attack on db if its compromise the all other are compromise and its mean the OS will be compromised
+  => kubernetes support (Open source). Integration of Docker with kubernetes
+  => Openshift (Open source kubn)  not supported by docker
+ 
+# Podman
+  => daemonless  => does not rely on service
+  => container + pod support    | pods => group of containers  => mean running multiple containers on each pods. IP, Resources like CPU, RAM ... assign on Pod level
+  => rootless containers with fully support    ==> does not need root priviledges. Normal user can easily use podman
+  => high security  ==> in scence of  Container => isolated mean nginx, httpd, etc should run independently. If any of container is compromised then the other would not be compromised
+  => Kubernetes partially supported   ==> mean we will do configuation for it 
+  => OpenShift  fully  supported  podman

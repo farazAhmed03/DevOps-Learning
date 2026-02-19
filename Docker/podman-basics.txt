@@ -1,0 +1,42 @@
+
+# Installation and some basics  commands
+
+  => yum install container-tools    || yum install podman
+  => podman ps   => without root working
+  => podman images  => without root working
+  => podman pull  nginx  => pull image but remember that each user should pull their own images i-e root should pull their own nginx and normal any user should their own
+  => Normal Commands Like Docker ==> start, stop, restart, pause, unpause, rm, rmi
+  => skeypo => skopeo inspect docker://imgName  inspect without pulling images unless like docker inspect when the images is pull or container is made. Advantage: Security reason => check image before pull
+  
+  => COMMANDS: 
+   #Images:
+	=> List       ==> podman images
+	=> Pull       ==> podman pull [options] image[:tag]
+	=> push       ==> podman push [options] image[:tag] [Destination]
+	=> remove     ==> podman rmi [options] image [Images...]
+	=> tag        ==> podman tag sourceImg[:tag] targetImg[:TAG]
+   #Containers:	
+	=> List                        ==> podman ps / podman ps -a
+	=> container-creation          ==> podman run -d -v  <vol-name>:<container-path> <img-name>     ==>   Volume Attach (Named Volume)      E.g: podman run -d -v nginx:/home/kali/nginx nginx
+        => GoInsideRunningContainer    ==> podman exec -it <container-name> <shell> if(shell is available)   
+	=> remove-Container            ==> podman rm [options] [containerId | container-name]
+	=> start, stop, restart, pause, unpause, logs ...etc 
+   #Volumes:
+	=> volume-create  ==> podman create volume <vol-name> 
+	=> vol-list       ==> podman volume list           
+	=> vol-remove     ==> podman volume  rm [options] <VOLUME>
+        => vol-inspect    ==> podman  volume inspect <VOLUME>
+        => vol-prune      ==> podman volume prune
+        => Use in run/crate ==> -v VOLUME:/container/path or -v /host/path:/container/path
+   #Registries: 
+	=> Login     ==> podmin login [options] [registry]
+        => logout    ==> podman logout [options] [registry]
+        => pull      ==> podman pull [registry/]Image[:Tag]
+        => push      ==> podman push [options] Images[:Tag] {Destination}
+   #Pod:
+        => create: podman pod create [options]            => podman pod create --name [any] -p hostPort:podPort
+        => add-container: podman run --pod podname...     => podman run --pod [podname] --name [any] [image] ,  ==> Here, --pod myPod mean donot make the container indep, like ip/port/network are used by pod and  then, podman start web  
+        => list-pod                              ==> pods lists
+        => container-with-pod-info               ==> podman ps --pod
+        => details: ip, ports, container-list    ==> podman pod inspect mypod
+        => podman start, stop, pause, unpause, restart, rm -f [podname]

@@ -1,0 +1,102 @@
+
+#Docker Commands 
+
+
+  #Images: 
+	List   => docker images 
+	Pull   => docker pull [OPTIONS] IMAGE[:TAG]     ==> docker pull nginx:latest
+	Push   => docker push [OPTIONS] IMAGE[:TAG]     ==> docker push username/myapp:latest
+	Remove => docker rmi [OPTIONS] IMAGE [IMAGE...] ==> docker rmi nginx:latest
+	Tag    => docker tag SOURCE_IMAGE TARGET_IMAGE  ==> docker tag nginx:latest mynginx:latest
+	Build  => docker build -t IMAGE .              
+    #Examples
+      docker run -d --name myweb -p 8080:80 nginx
+      docker run -exec -it --name [any] ubuntu bash/sh/zh   ==> build/create and go immediately  inside running container 
+      docker exec -it --name [any] ubuntu bash/sh/zh        ==> go inside running container	: NOte: Container should be make first
+      docker stop  [container-name]
+      docker start [container-name]
+      docker rm    [container-name]   OR docker rm -f [container-name]
+      docker logs -f [container-name]
+ 
+
+  #Volume:
+      Create    => docker volume create [OPTIONS] VOLUME
+      List      => docker volume ls
+      Inspect   => docker volume inspect VOLUME
+      Remove    => docker volume rm VOLUME
+      Prune     => docker volume prune
+      Use       => -v VOLUME:/path ya -v /host/path:/container/path
+    #EXAMPLE:    
+        docker volume create mydata
+	docker run -d -v mydata:/app/data nginx
+    #Bind mount
+	docker run -d -v /home/kali/project:/usr/share/nginx/html nginx
+	docker volume rm mydata
+	docker volume prune
+  
+  #Registry
+     Login      => docker login    || docker login [options] [Registry]
+     Logout     => docker logout   
+     pull/push  => docker push/pull [options] [registry]
+   #Example:
+	docker login   | docker login quay.io
+	docker pull mycompany/app:prod
+	docker push quay.io/myuser/myyapp:v1
+
+
+  #Network (docker network)
+     Create     => docker network create [Options] Network
+     List       => docker network ls
+     inspect    => docker network inspect Network
+     remove     => docker network rm NETWORK
+     USE        => --network NETWORK in run
+   #Examples:
+	docker network create [network-name]
+	docker run --network [name] --name [any] [image]
+	docker network rm [network-name]
+
+
+
+  #Docker file related Commands
+    #Image build 	
+	docker build -t myapp:latest .                      => . = current directory
+	docker build -t myapp:v1.0 -f Dockerfile.dev .      => custom file name
+	docker build --no-cache -	t myapp:latest .    => cache ignore rebuild
+	docker buildx build --platform linux/amd64,linux/arm64 -t myapp:latest .   ==> multi-platform 
+   #Tag change
+	docker tag myapp:latest myusername/myapp:v1
+   #Push / Pull
+	docker push myusername/myapp:v1
+	docker pull myusername/myapp:v1
+
+
+  #Docker Compose basic COmmands
+    #All Start
+	docker compose up		=> Run in foreground
+	docker compose up -d		=> Run in background (detached)
+	docker compose up --build	=> Rebuild Images
+	docker compose up -d --force-reacreate => Recreatee Image forcefully
+    #Stop All
+	docker compose down		=> container + network remove
+	docker compose down -v		=> container + network + volume remove 
+	docker compose down --rmi all	=> delete all with images (local)
+   #Status/List
+	docker compose ps	==> running services
+	docker compose ps -a	==> all service (running services + stop services)
+   #Logs 
+	docker compose logs		  ==> all logs of services
+	docker compose logs -f web	  ==> follow live logs of 'web' service
+	docker compose logs --tail=100db  ==> last 100 lines
+   # Entering into a Container
+	docker compose exec [contaainer-name] bash/zh/sh   ==> shell inside web service
+	docker compose exec -it db mysql -u root -p	   ==> mysql connect
+  
+   # Build but not run  ==> docker compose --build
+   # Check Config  ===> docker compose config
+   # Scale (multiple Instance)  ==> docker compose up -d --scale [container]=3 or any value
+   # Event / Top
+	docker compose event  ==> Real Time Events
+	docker compose top    ==> Processes inside containers
+
+
+
